@@ -8,5 +8,32 @@
 <body>
   <h1> <%= title %> </h1>
   <%- include("./partials/nav.ejs") %>
+  <table>
+    <caption>Categories</caption>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Created At</th>
+        <th>Last Updated At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (locals.categories) { %>
+        <% categories.forEach(category => { %>
+          <tr>
+            <td> <%= category.id %> </td>
+            <td> <%= category.name %> </td>
+            <td> <%= category.description %> </td>
+            <td> <%= category.created_at %> </td>
+            <td> <%= category.updated_at %> </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr><td colspan="5">No Categories To Display</td></tr>
+      <% } %>
+    </tbody>
+  </table>
 </body>
 </html>

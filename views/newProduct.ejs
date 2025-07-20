@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <%- include("./partials/nav.ejs") %> <% if (locals.categories) { %>
+    <h2>Create New Product</h2>
+    <form action="/products/new" method="POST">
+      <div>
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          autofocus
+          placeholder="e.g. Wireless Mouse"
+        >
+      </div>
+
+      <div>
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          required
+          placeholder="Short product description"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div>
+        <label for="unit">Unit</label>
+        <input
+          type="text"
+          id="unit"
+          name="unit"
+          required
+          placeholder="e.g. pcs, kg"
+        >
+      </div>
+
+      <div>
+        <label for="price">Price ($)</label>
+        <input
+          type="number"
+          id="price"
+          name="price"
+          required
+          min="0"
+          step="0.01"
+          placeholder="e.g. 19.99"
+        >
+      </div>
+
+      <div>
+        <label for="category_id">Category</label>
+        <select id="category_id" name="category_id" required>
+          <option value="" disabled selected>Select a category</option>
+          <% categories.forEach(category => { %>
+            <option value="<%= category.id %>"><%= category.name %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <button type="submit">Create Product</button>
+    </form>
+    <% } else { %>
+    <p>
+      Need to create a category first. Click
+      <a href="/categories/new">here</a> to create a category.
+    </p>
+    <% } %>
+  </body>
+</html>
