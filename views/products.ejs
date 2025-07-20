@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> <%= title %> </title>
+</head>
+<body>
+  <h1> <%= title %> </h1>
+  <%- include("./partials/nav.ejs") %>
+    <table>
+    <caption>Products</caption>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Unit</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Created At</th>
+        <th>Last Updated At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (locals.products) { %>
+        <% products.forEach(product => { %>
+          <tr>
+            <td> <%= product.id %> </td>
+            <td> <%= product.name %> </td>
+            <td> <%= product.description %> </td>
+            <td> <%= product.unit %> </td>
+            <td> <%= product.price %> </td>
+            <td> <%= product.category %> </td>
+            <td> <%= product.created_at %> </td>
+            <td> <%= product.updated_at %> </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr><td colspan="8">No Products To Display</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+
+</body>
+</html>
