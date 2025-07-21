@@ -1,5 +1,5 @@
 - Add back end input validation
-- Add double check before deleting product (onClick confirm?)
+- Add double check before deleting product (onClick confirm?) + refactor to post method
 - Add sorting for product and categories screens
 - Add limit for displayed products + ability to adjust (5, 10, 10, etc.)
 - Figure out how to handle deleting categories that have products assigned

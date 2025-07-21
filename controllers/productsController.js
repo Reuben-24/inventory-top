@@ -1,8 +1,21 @@
 const queries = require("../db/queries.js");
 
 exports.index = async (req, res) => {
-  let allProducts = await queries.getAllProductsWithCategories();
-  res.render("products", { title: "Products", products: allProducts });
+  const sortColumn = req.query.sortColumn || "id";
+  const sortOrder = req.query.sortOrder || "ASC";
+  const numberOfRows = req.query.numberOfRows || 5;
+  const products = await queries.getProductsWithCategories({
+    sortColumn,
+    sortOrder,
+    numberOfRows,
+  });
+  res.render("products", {
+    title: "Products",
+    products,
+    sortColumn,
+    sortOrder,
+    numberOfRows,
+  });
 };
 
 exports.renderNewForm = async (req, res) => {
@@ -20,14 +33,21 @@ exports.delete = async (req, res) => {
   const { id } = req.body;
   await queries.deleteProduct(id);
   res.redirect("/products");
-}
+};
 
 exports.update = async (req, res) => {
   const { id } = req.params;
   const { name, description, unit, price, category_id } = req.body;
-  await queries.updateProduct({ id, name, description, unit, price, category_id });
+  await queries.updateProduct({
+    id,
+    name,
+    description,
+    unit,
+    price,
+    category_id,
+  });
   res.redirect("/products");
-}
+};
 
 exports.renderUpdateForm = async (req, res) => {
   const id = req.params.id;

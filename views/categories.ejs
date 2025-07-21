@@ -9,6 +9,33 @@
   <h1> <%= title %> </h1>
   <%- include("./partials/nav.ejs") %>
   <a href="categories/new">Create New Category</a>
+
+  <form action="/categories" method="GET">
+    <h2>Sort Categories</h2>
+
+    <select name="sortColumn">
+      <option value="id" <%= sortColumn === 'id' ? 'selected' : '' %>>ID</option>
+      <option value="name" <%= sortColumn === 'name' ? 'selected' : '' %>>Name</option>
+      <option value="description" <%= sortColumn === 'description' ? 'selected' : '' %>>Description</option>
+      <option value="created_at" <%= sortColumn === 'created_at' ? 'selected' : '' %>>Created At</option>
+      <option value="updated_at" <%= sortColumn === 'updated_at' ? 'selected' : '' %>>Last Updated At</option>
+    </select>
+
+    <select name="sortOrder">
+      <option value="ASC" <%= sortOrder === 'ASC' ? 'selected' : '' %>>Ascending</option>
+      <option value="DESC" <%= sortOrder === 'DESC' ? 'selected' : '' %>>Descending</option>
+    </select>
+
+    <select name="numberOfRows">
+      <option value="5" <%= Number(numberOfRows) === 5 ? 'selected' : '' %>>5</option>
+      <option value="20" <%= Number(numberOfRows) === 20 ? 'selected' : '' %>>20</option>
+      <option value="50" <%= Number(numberOfRows) === 50 ? 'selected' : '' %>>50</option>
+      <option value="100" <%= Number(numberOfRows) === 100 ? 'selected' : '' %>>100</option>
+    </select>
+
+    <button type="submit">Sort</button>
+  </form>
+
   <table>
     <caption>Categories</caption>
     <thead>

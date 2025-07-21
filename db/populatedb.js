@@ -48,7 +48,12 @@ VALUES
   ('Electronics', 'Devices such as phones, laptops, and accessories'),
   ('Groceries', 'Everyday food and household items'),
   ('Furniture', 'Home and office furniture'),
-  ('Clothing', 'Apparel and garments');
+  ('Clothing', 'Apparel and garments'),
+  ('Home & Kitchen', 'Household items including cookware, lunch bags, and kettles.'),
+  ('Health & Fitness', 'Products related to wellness, exercise, and personal care.'),
+  ('Books', 'Various genres of books and literature'),
+  ('Toys', 'Children’s toys and games'),
+  ('Beauty', 'Skincare, makeup, and personal care products');
 
 INSERT INTO products (name, description, unit, price, category_id)
 VALUES 
@@ -58,7 +63,23 @@ VALUES
   ('Rice', 'Premium jasmine rice', '5kg bag', 12.75, (SELECT id FROM categories WHERE name = 'Groceries')),
   ('Office Chair', 'Ergonomic mesh back office chair', 'pcs', 139.00, (SELECT id FROM categories WHERE name = 'Furniture')),
   ('T-Shirt', 'Cotton crew neck t-shirt', 'pcs', 15.00, (SELECT id FROM categories WHERE name = 'Clothing')),
-  ('Jeans', 'Slim fit blue jeans', 'pcs', 49.99, (SELECT id FROM categories WHERE name = 'Clothing'));
+  ('Jeans', 'Slim fit blue jeans', 'pcs', 49.99, (SELECT id FROM categories WHERE name = 'Clothing')),
+  ('Bluetooth Headphones', 'Wireless noise-cancelling headphones', 'pcs', 79.99, (SELECT id FROM categories WHERE name = 'Electronics')),
+  ('Smartphone Charger', 'Fast charging USB-C charger', 'pcs', 19.99, (SELECT id FROM categories WHERE name = 'Electronics')),
+  ('Almond Milk', 'Organic unsweetened almond milk, 1L', 'ltr', 3.99, (SELECT id FROM categories WHERE name = 'Groceries')),
+  ('Olive Oil', 'Extra virgin olive oil, 500ml', 'bottle', 9.50, (SELECT id FROM categories WHERE name = 'Groceries')),
+  ('Dining Table', 'Wooden dining table seats 6', 'pcs', 499.00, (SELECT id FROM categories WHERE name = 'Furniture')),
+  ('Bookshelf', '5-tier wooden bookshelf', 'pcs', 129.99, (SELECT id FROM categories WHERE name = 'Furniture')),
+  ('Hoodie', 'Fleece pullover hoodie', 'pcs', 35.00, (SELECT id FROM categories WHERE name = 'Clothing')),
+  ('Sneakers', 'Lightweight running sneakers', 'pair', 59.99, (SELECT id FROM categories WHERE name = 'Clothing')),
+  ('Non-stick Frying Pan', '24cm frying pan with non-stick coating', 'pcs', 24.99, (SELECT id FROM categories WHERE name = 'Home & Kitchen')),
+  ('Lunch Box', 'Insulated lunch box with compartments', 'pcs', 18.50, (SELECT id FROM categories WHERE name = 'Home & Kitchen')),
+  ('Yoga Mat', 'Eco-friendly non-slip yoga mat', 'pcs', 29.99, (SELECT id FROM categories WHERE name = 'Health & Fitness')),
+  ('Dumbbell Set', 'Adjustable dumbbell set up to 20kg', 'set', 99.00, (SELECT id FROM categories WHERE name = 'Health & Fitness')),
+  ('Mystery Novel', 'Thrilling mystery fiction book', 'pcs', 12.99, (SELECT id FROM categories WHERE name = 'Books')),
+  ('Children’s Puzzle', '500-piece jigsaw puzzle', 'pcs', 14.99, (SELECT id FROM categories WHERE name = 'Toys')),
+  ('Lip Balm', 'Natural moisturizing lip balm', 'pcs', 4.50, (SELECT id FROM categories WHERE name = 'Beauty')),
+  ('Face Cleanser', 'Gentle daily face cleanser', 'bottle', 13.00, (SELECT id FROM categories WHERE name = 'Beauty'));
 `;
 
 async function main() {

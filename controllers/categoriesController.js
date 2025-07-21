@@ -1,9 +1,22 @@
 const queries = require("../db/queries.js");
 
 exports.index = async (req, res) => {
-  const allCategories = await queries.getAllCategories();
-  res.render("categories", { title: "Categories", categories: allCategories });
-}
+  const sortColumn = req.query.sortColumn || "id";
+  const sortOrder = req.query.sortOrder || "ASC";
+  const numberOfRows = req.query.numberOfRows || 5;
+  const categories = await queries.getCategories({
+    sortColumn,
+    sortOrder,
+    numberOfRows,
+  });
+  res.render("categories", {
+    title: "Categories",
+    categories,
+    sortColumn,
+    sortOrder,
+    numberOfRows,
+  });
+};
 
 exports.renderNewForm = async (req, res) => {
   res.render("categoryForm", { title: "Create New Category" });
@@ -19,7 +32,7 @@ exports.delete = async (req, res) => {
   const { id } = req.body;
   await queries.deleteCategory(id);
   res.redirect("/categories");
-}
+};
 
 exports.renderUpdateForm = async (req, res) => {
   const id = req.params.id;
@@ -33,4 +46,4 @@ exports.update = async (req, res) => {
   const { name, description } = req.body;
   await queries.updateCategory({ id, name, description });
   res.redirect("/categories");
-}
+};
