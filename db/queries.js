@@ -10,17 +10,104 @@ exports.getAllProductsWithCategories = async () => {
   return rows;
 };
 
+exports.getProductsWithCategories = async ({
+  sortColumn,
+  sortOrder,
+  numberOfRows,
+}) => {
+  const validColumns = [
+    "id",
+    "name",
+    "description",
+    "unit",
+    "price",
+    "category",
+    "created_at",
+    "updated_at",
+  ];
+  const validOrders = ["ASC", "DESC"];
+
+  if (!validColumns.includes(sortColumn)) {
+    throw new Error(`Invalid sortColumn: ${sortColumn}`);
+  }
+
+  if (!validOrders.includes(sortOrder)) {
+    throw new Error(`Invalid sortOrder: ${sortOrder}`);
+  }
+
+  numberOfRows = Number(numberOfRows);
+  if (!Number.isInteger(numberOfRows) || numberOfRows <= 0) {
+    throw new Error(`Invalid numberOfRows: ${numberOfRows}`)
+  }
+
+  const { rows } = await pool.query(
+    `
+    SELECT p.*, c.name AS category
+    FROM products AS p
+    JOIN categories AS c
+    ON p.category_id = c.id
+    ORDER BY ${sortColumn} ${sortOrder}
+    LIMIT $1;
+  `,
+    [numberOfRows]
+  );
+  return rows;
+};
+
 exports.getAllCategories = async () => {
   const { rows } = await pool.query("SELECT * FROM categories");
   return rows;
+};
+
+exports.getCategories = async ({
+  sortColumn,
+  sortOrder,
+  numberOfRows,
+}) => {
+  const validColumns = [
+    "id",
+    "name",
+    "description",
+    "created_at",
+    "updated_at",
+  ];
+  const validOrders = ["ASC", "DESC"];
+
+  if (!validColumns.includes(sortColumn)) {
+    throw new Error(`Invalid sortColumn: ${sortColumn}`);
+  }
+
+  if (!validOrders.includes(sortOrder)) {
+    throw new Error(`Invalid sortOrder: ${sortOrder}`);
+  }
+
+  numberOfRows = Number(numberOfRows);
+  if (!Number.isInteger(numberOfRows) || numberOfRows <= 0) {
+    throw new Error(`Invalid numberOfRows: ${numberOfRows}`)
+  }
+
+  const { rows } = await pool.query(
+    `
+    SELECT *
+    FROM categories
+    ORDER BY ${sortColumn} ${sortOrder}
+    LIMIT $1;
+  `,
+    [numberOfRows]
+  );
+  return rows;
+};
+
+exports.getProduct = async (id) => {
+  const result = await pool.query("SELECT * FROM products WHERE id = $1", [id]);
+  return result.rows[0];
 };
 
 exports.getCategory = async (id) => {
   const result = await pool.query("SELECT * FROM categories WHERE id = $1", [
     id,
   ]);
-  const category = result.rows[0];
-  return category;
+  return result.rows[0];
 };
 
 exports.insertProduct = async ({
@@ -39,15 +126,56 @@ exports.insertProduct = async ({
   return result.rows[0];
 };
 
-exports.insertCategory = async ({
-  name,
-  description,
-}) => {
+exports.insertCategory = async ({ name, description }) => {
   const result = await pool.query(
     `INSERT INTO categories (name, description)
     VALUES ($1, $2)
     RETURNING *`,
     [name, description]
+  );
+  return result.rows[0];
+};
+
+exports.deleteProduct = async (id) => {
+  const result = await pool.query("DELETE FROM products WHERE id = $1", [id]);
+  return result.rowCount > 0; // returns true if a row was deleted
+};
+
+exports.deleteCategory = async (id) => {
+  const result = await pool.query("DELETE FROM categories WHERE id = $1", [id]);
+  return result.rowCount > 0; // returns true if a row was deleted
+};
+
+exports.updateProduct = async ({
+  id,
+  name,
+  description,
+  unit,
+  price,
+  category_id,
+}) => {
+  const result = await pool.query(
+    `UPDATE products
+     SET name = $2,
+         description = $3,
+         unit = $4,
+         price = $5,
+         category_id = $6
+     WHERE id = $1
+     RETURNING *;`,
+    [id, name, description, unit, price, category_id]
+  );
+  return result.rows[0];
+};
+
+exports.updateCategory = async ({ id, name, description }) => {
+  const result = await pool.query(
+    `UPDATE categories
+     SET name = $2,
+         description = $3
+     WHERE id = $1
+     RETURNING *;`,
+    [id, name, description]
   );
   return result.rows[0];
 };

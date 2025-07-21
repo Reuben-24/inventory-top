@@ -24,7 +24,7 @@
       </tr>
     </thead>
     <tbody>
-      <% if (locals.products) { %>
+      <% if (products) { %>
         <% products.forEach(product => { %>
           <tr>
             <td> <%= product.id %> </td>
@@ -35,6 +35,17 @@
             <td> <%= product.category %> </td>
             <td> <%= product.created_at %> </td>
             <td> <%= product.updated_at %> </td>
+            <td>
+              <form action="/products/<%= product.id %>/update" method="GET">
+                <button type="submit">Update</button>     
+              </form>
+            </td>
+            <td>
+              <form action="/products/delete" method="POST">
+                <input type="hidden" name="id" value="<%= product.id %>">
+                <button type="submit">Delete</button>     
+              </form>
+            </td>
           </tr>
         <% }) %>
       <% } else { %>

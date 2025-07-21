@@ -21,7 +21,7 @@
       </tr>
     </thead>
     <tbody>
-      <% if (locals.categories) { %>
+      <% if (categories) { %>
         <% categories.forEach(category => { %>
           <tr>
             <td> <%= category.id %> </td>
@@ -29,6 +29,17 @@
             <td> <%= category.description %> </td>
             <td> <%= category.created_at %> </td>
             <td> <%= category.updated_at %> </td>
+            <td>
+              <form action="categories/<%= category.id %>/update" method="GET">
+                <button type="submit">Update</button>     
+              </form>
+            </td>
+            <td>
+              <form action="categories/delete" method="POST">
+                <input type="hidden" name="id" value="<%= category.id %>">
+                <button type="submit">Delete</button>     
+              </form>
+            </td>
           </tr>
         <% }) %>
       <% } else { %>

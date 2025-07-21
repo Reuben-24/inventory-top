@@ -8,12 +8,11 @@
   <body>
     <h1><%= title %></h1>
     <%- include("./partials/nav.ejs") %>
-    <h2>Create New Category</h2>
-
-    <form action="/categories/new" method="POST">
+    <form action="<%= category ? '/categories/' + category.id + '/update' : '/categories/new' %>" method="POST">
       <div>
         <label for="name">Name</label>
         <input
+          value="<%= category ? category.name : "" %>"
           type="text"
           id="name"
           name="name"
@@ -31,9 +30,9 @@
           required
           placeholder="Short category description"
           rows="3"
-        ></textarea>
+        ><%= category ? category.description : "" %></textarea>
       </div>
-      <button type="submit">Create Category</button>
+      <button type="submit"><%= title %></button>
     </form>
   </body>
 </html>
