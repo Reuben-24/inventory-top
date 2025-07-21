@@ -11,9 +11,10 @@ exports.getAllProductsWithCategories = async () => {
 };
 
 exports.getProductsWithCategories = async ({
-  sortColumn,
-  sortOrder,
-  numberOfRows,
+  sortColumn = "id",
+  sortOrder = "ASC",
+  numberOfRows = 100,
+  searchInput = "",
 }) => {
   const validColumns = [
     "id",
@@ -40,16 +41,19 @@ exports.getProductsWithCategories = async ({
     throw new Error(`Invalid numberOfRows: ${numberOfRows}`)
   }
 
+  const searchPattern = searchInput ? `%${searchInput.trim()}%` : '%';
+
   const { rows } = await pool.query(
     `
     SELECT p.*, c.name AS category
     FROM products AS p
     JOIN categories AS c
     ON p.category_id = c.id
+    WHERE p.name ILIKE $2
     ORDER BY ${sortColumn} ${sortOrder}
     LIMIT $1;
   `,
-    [numberOfRows]
+    [numberOfRows, searchPattern]
   );
   return rows;
 };
@@ -60,9 +64,10 @@ exports.getAllCategories = async () => {
 };
 
 exports.getCategories = async ({
-  sortColumn,
-  sortOrder,
-  numberOfRows,
+  sortColumn = "id",
+  sortOrder = "ASC",
+  numberOfRows = 100,
+  searchInput = "",
 }) => {
   const validColumns = [
     "id",
@@ -86,14 +91,17 @@ exports.getCategories = async ({
     throw new Error(`Invalid numberOfRows: ${numberOfRows}`)
   }
 
+  const searchPattern = searchInput ? `%${searchInput.trim()}%` : '%';
+
   const { rows } = await pool.query(
     `
     SELECT *
     FROM categories
+    WHERE name ILIKE $2
     ORDER BY ${sortColumn} ${sortOrder}
     LIMIT $1;
   `,
-    [numberOfRows]
+    [numberOfRows, searchPattern]
   );
   return rows;
 };

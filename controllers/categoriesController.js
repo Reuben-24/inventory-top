@@ -1,17 +1,20 @@
 const queries = require("../db/queries.js");
 
 exports.index = async (req, res) => {
+  const searchInput = req.query.q || "";
   const sortColumn = req.query.sortColumn || "id";
   const sortOrder = req.query.sortOrder || "ASC";
-  const numberOfRows = req.query.numberOfRows || 5;
+  const numberOfRows = req.query.numberOfRows || 100;
   const categories = await queries.getCategories({
     sortColumn,
     sortOrder,
     numberOfRows,
+    searchInput,
   });
   res.render("categories", {
     title: "Categories",
     categories,
+    searchInput,
     sortColumn,
     sortOrder,
     numberOfRows,

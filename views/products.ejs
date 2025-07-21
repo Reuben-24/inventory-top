@@ -9,6 +9,13 @@
   <h1> <%= title %> </h1>
   <%- include("./partials/nav.ejs") %>
   <a href="products/new">Create New Product</a>
+
+  <form action="/products" method="GET">
+    <h2>Search Product Names</h2>
+    <input value="<%= searchInput %>" type="search" id="query" name="q" placeholder="Type your search...">
+    <button type="submit">Search</button>
+  </form>
+
   <form action="/products" method="GET">
     <h2>Sort Products</h2>
 

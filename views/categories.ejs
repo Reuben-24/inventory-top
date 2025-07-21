@@ -11,6 +11,12 @@
   <a href="categories/new">Create New Category</a>
 
   <form action="/categories" method="GET">
+    <h2>Search Category Names</h2>
+    <input value="<%= searchInput %>" type="search" id="query" name="q" placeholder="Type your search...">
+    <button type="submit">Search</button>
+  </form>
+
+  <form action="/categories" method="GET">
     <h2>Sort Categories</h2>
 
     <select name="sortColumn">
