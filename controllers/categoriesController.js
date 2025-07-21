@@ -1,4 +1,6 @@
+const { validationResult } = require("express-validator");
 const queries = require("../db/queries.js");
+const validation = require("../validation.js");
 
 exports.index = async (req, res) => {
   const searchInput = req.query.q || "";
@@ -25,11 +27,20 @@ exports.renderNewForm = async (req, res) => {
   res.render("categoryForm", { title: "Create New Category" });
 };
 
-exports.create = async (req, res) => {
-  const { name, description } = req.body;
-  await queries.insertCategory({ name, description });
-  res.redirect("/categories");
-};
+exports.create = [
+    validation.validateCategory,
+
+    async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const message = errors.array().map(err => err.msg).join(", ");
+      return next(new Error(message));
+    }   
+    const { name, description } = req.body;
+    await queries.insertCategory({ name, description });
+    res.redirect("/categories");
+  },
+];
 
 exports.delete = async (req, res) => {
   const { id } = req.body;

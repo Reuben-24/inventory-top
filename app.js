@@ -16,6 +16,12 @@ app.use("/categories", categoriesRouter);
 app.use("/products", productsRouter);
 app.use("/", indexRouter);
 
+app.use((err, req, res, next) => {
+  console.error(err);
+  const message = err.message;
+  res.status(500).render("error", { message });
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`Project: ${path.basename(__dirname)} -  Hosted at http://${process.env.HOST}:${process.env.PORT}`);
 })

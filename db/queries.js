@@ -38,10 +38,10 @@ exports.getProductsWithCategories = async ({
 
   numberOfRows = Number(numberOfRows);
   if (!Number.isInteger(numberOfRows) || numberOfRows <= 0) {
-    throw new Error(`Invalid numberOfRows: ${numberOfRows}`)
+    throw new Error(`Invalid numberOfRows: ${numberOfRows}`);
   }
 
-  const searchPattern = searchInput ? `%${searchInput.trim()}%` : '%';
+  const searchPattern = searchInput ? `%${searchInput.trim()}%` : "%";
 
   const { rows } = await pool.query(
     `
@@ -88,10 +88,10 @@ exports.getCategories = async ({
 
   numberOfRows = Number(numberOfRows);
   if (!Number.isInteger(numberOfRows) || numberOfRows <= 0) {
-    throw new Error(`Invalid numberOfRows: ${numberOfRows}`)
+    throw new Error(`Invalid numberOfRows: ${numberOfRows}`);
   }
 
-  const searchPattern = searchInput ? `%${searchInput.trim()}%` : '%';
+  const searchPattern = searchInput ? `%${searchInput.trim()}%` : "%";
 
   const { rows } = await pool.query(
     `
@@ -115,7 +115,7 @@ exports.getCategory = async (id) => {
   const result = await pool.query("SELECT * FROM categories WHERE id = $1", [
     id,
   ]);
-  return result.rows[0];
+  return result.rows[0] || null; // return null if no category found
 };
 
 exports.insertProduct = async ({
@@ -150,6 +150,19 @@ exports.deleteProduct = async (id) => {
 };
 
 exports.deleteCategory = async (id) => {
+  // Count how many products are using this category
+  const { rows } = await pool.query(
+    "SELECT COUNT(*) FROM products WHERE category_id = $1",
+    [id]
+  );
+
+  const rowCount = Number(rows[0].count);
+  if (rowCount > 0) {
+    throw new Error(
+      "Cannot delete this category. It is assigned to one or more products."
+    );
+  }
+
   const result = await pool.query("DELETE FROM categories WHERE id = $1", [id]);
   return result.rowCount > 0; // returns true if a row was deleted
 };

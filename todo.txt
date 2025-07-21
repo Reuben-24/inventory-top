@@ -1,4 +1,2 @@
 - Add back end input validation
-- Add double check before deleting product (onClick confirm?) + refactor to post method
-- Figure out how to handle deleting categories that have products assigned
-- Add product + category search functionality
+- Double check app for error handling

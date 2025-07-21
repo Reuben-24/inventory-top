@@ -8,11 +8,11 @@
   <body>
     <h1><%= title %></h1>
     <%- include("./partials/nav.ejs") %> <% if (locals.categories) { %>
-    <form action="<%= product ? '/products/' + product.id + '/update' : '/products/new' %>" method="POST">
+    <form action="<%= locals.product ? '/products/' + product.id + '/update' : '/products/new' %>" method="POST">
       <div>
         <label for="name">Name</label>
         <input
-          value="<%= product ? product.name : "" %>"
+          value="<%= locals.product ? product.name : "" %>"
           type="text"
           id="name"
           name="name"
@@ -30,13 +30,13 @@
           required
           placeholder="Short product description"
           rows="3"
-        ><%= product ? product.description : "" %></textarea>
+        ><%= locals.product ? product.description : "" %></textarea>
       </div>
 
       <div>
         <label for="unit">Unit</label>
         <input
-          value="<%= product ? product.unit : "" %>"
+          value="<%= locals.product ? product.unit : "" %>"
           type="text"
           id="unit"
           name="unit"
@@ -48,7 +48,7 @@
       <div>
         <label for="price">Price ($)</label>
         <input
-          value="<%= product ? product.price : "" %>"
+          value="<%= locals.product ? product.price : "" %>"
           type="number"
           id="price"
           name="price"
@@ -62,10 +62,10 @@
       <div>
         <label for="category_id">Category</label>
         <select id="category_id" name="category_id" required>
-          <option value="" disabled <%= !product ? "selected" : "" %> >Select a category</option>
+          <option value="" disabled <%= !locals.product ? "selected" : "" %> >Select a category</option>
           <% categories.forEach(category => { %>
           <option 
-            <%= product && product.category_id === category.id ? "selected" : "" %> 
+            <%= locals.product && product.category_id === category.id ? "selected" : "" %> 
             value="<%= category.id %>"
           >
             <%= category.name %>

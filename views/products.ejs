@@ -79,7 +79,7 @@
             <td>
               <form action="/products/delete" method="POST">
                 <input type="hidden" name="id" value="<%= product.id %>">
-                <button type="submit">Delete</button>     
+                <button onClick="return confirm('Are you sure you want to delete this product (<%= product.name %>)?')" type="submit">Delete</button>     
               </form>
             </td>
           </tr>

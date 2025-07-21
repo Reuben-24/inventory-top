@@ -8,11 +8,11 @@
   <body>
     <h1><%= title %></h1>
     <%- include("./partials/nav.ejs") %>
-    <form action="<%= category ? '/categories/' + category.id + '/update' : '/categories/new' %>" method="POST">
+    <form action="<%= locals.category ? '/categories/' + category.id + '/update' : '/categories/new' %>" method="POST">
       <div>
         <label for="name">Name</label>
         <input
-          value="<%= category ? category.name : "" %>"
+          value="<%= locals.category ? category.name : "" %>"
           type="text"
           id="name"
           name="name"
@@ -30,7 +30,7 @@
           required
           placeholder="Short category description"
           rows="3"
-        ><%= category ? category.description : "" %></textarea>
+        ><%= locals.category ? category.description : "" %></textarea>
       </div>
       <button type="submit"><%= title %></button>
     </form>
