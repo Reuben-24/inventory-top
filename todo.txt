@@ -1,2 +1,0 @@
-- Add back end input validation
-- Double check app for error handling
